@@ -1,0 +1,162 @@
+Python Decorators Concept
+========================
+
+1. Namespace and variable Scope
+2. LEGB Rules
+3. Closures
+4. Decorators
+
+1. Namespace and Variable Scope
+------------------------------
+A namespace is a collection of currently defined names along with information
+about the object that each name reference. You can think of a namespace as a
+dictionary in which the key are the object names and the value are the objects
+themselves. Each key-value maps a name to its corresponding object
+
+There are four types of namespace:
+1. Built-In
+2. Global
+3. Enclosing
+4. Local
+
+The Built-In NameSpace:
+-----------------------
+
+The Build-In namespace contains the names of all of python built-in object.
+These are available at the times when python is running. You can  list the
+object in the built-in namespace with the following commands:
+
+print(dir(__builtins__))
+
+The python interpreter creates the built-in namespace when it start up. This
+namespace remains in existence until the interpreter terminates
+
+OUTPUT
+------
+
+['ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BlockingIOError',
+'BrokenPipeError', 'BufferError', 'BytesWarning', 'ChildProcessError', 'ConnectionAbortedError',
+'ConnectionError', 'ConnectionRefusedError', 'ConnectionResetError', 'DeprecationWarning',
+'EOFError', 'Ellipsis', 'EnvironmentError', 'Exception', 'False', 'FileExistsError',
+'FileNotFoundError', 'FloatingPointError', 'FutureWarning', 'GeneratorExit', 'IOError',
+'ImportError', 'ImportWarning', 'IndentationError', 'IndexError', 'InterruptedError',
+'IsADirectoryError', 'KeyError', 'KeyboardInterrupt', 'LookupError', 'MemoryError',
+'ModuleNotFoundError', 'NameError', 'None', 'NotADirectoryError', 'NotImplemented',
+'NotImplementedError', 'OSError', 'OverflowError', 'PendingDeprecationWarning', 'PermissionError',
+'ProcessLookupError', 'RecursionError', 'ReferenceError', 'ResourceWarning',
+'RuntimeError', 'RuntimeWarning', 'StopAsyncIteration', 'StopIteration', 'SyntaxError',
+'SyntaxWarning', 'SystemError', 'SystemExit', 'TabError', 'TimeoutError', 'True', 'TypeError',
+'UnboundLocalError', 'UnicodeDecodeError', 'UnicodeEncodeError', 'UnicodeError',
+'UnicodeTranslateError', 'UnicodeWarning', 'UserWarning', 'ValueError', 'Warning',
+'WindowsError', 'ZeroDivisionError', '__build_class__', '__debug__', '__doc__', '__import__',
+'__loader__', '__name__', '__package__', '__spec__', 'abs', 'all', 'any', 'ascii',
+'bin', 'bool', 'breakpoint', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod',
+'compile', 'complex', 'copyright', 'credits', 'delattr', 'dict', 'dir', 'divmod',
+'enumerate', 'eval', 'exec', 'exit', 'filter', 'float', 'format', 'frozenset', 'getattr',
+'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int',
+'isinstance', 'issubclass', 'iter', 'len', 'license', 'list', 'locals',
+'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord',
+'pow', 'print', 'property', 'quit', 'range', 'repr', 'reversed', 'round',
+'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super',
+'tuple', 'type', 'vars', 'zip']
+
+The Global Namespace
+--------------------
+
+The Global namespace contains any names defined at the level of the main program. Python
+creates the global namespace when the main program body starts, and it remains in existence
+until the interpreter ternimates
+
+programs:
+---------
+x = 10 #Global variable
+def func():
+    print("Global variable: ",x)
+func()
+
+Modifing the global variable inside the function
+-----------------------------------------------
+
+x = 10
+def func():
+    res = x+1
+    print("Modifing global variable inside local scope: ",res) # we will get the error here
+func()
+
+We cannot modify the global variable inside local scope without using global key. If you want to
+change the global variable inside local scope we should use global key inside the local scope. can
+you below program
+
+y = 10  # golbal variable
+print("Out side function global variable: ", y)
+def func():
+    x = 20  # local variable
+    global y
+    res = x + y
+    print("Inside the function: ", res)
+    y = y + 1
+    print("Modify the global variable inside the function: ", y)
+func()
+print("outSide function modify global variable:", y)
+
+The Local and Enclosing NameSpace:
+---------------------------------
+
+The local variable interpreter creates a new namespace whenever a function executes.
+The namespace is local to the function and remains in existence until the function
+terminates
+
+def func():
+    x = 10 # local variable
+    print("Local variable inside the function: ",x)
+func()
+
+
+y = 10 # Global variable
+def outer(): #Enclosing Function
+    z = 4 # Enclosed variable
+    def inner(): #Nested Function
+        x = 5
+        print("X:",x)
+        print("Inside the function global variable: ",y)
+    inner()
+    print("Enclosing variable: ",z)
+outer()
+
+
+y = 10
+def outer():
+    z = 15
+    def inner():
+        x = 4
+        nonlocal z
+        z = z+1
+        print("Local variable: ",x)
+        print("Inside the function enclosed variable: ",z)
+    inner()
+    print("Outer function enclosed variable: ",z)
+outer()
+
+Local:
+------
+If you refer to x inside a function, then the interpreter first searches for it in the
+innermost scope that's local to that function.
+
+Enclosing:
+---------
+If X isn't in the local scope  but appears in a function that resides inside another
+function, then the interpreter searches in the enclosing function's scope.
+
+Global:
+------
+If neither of the above searches is fruitful, then the interpreter looks in the
+global scope next.
+
+Built-in:
+--------
+If it can't find x anywhere else, then the interpreter tries the built-in scope
+
+
+
+
+

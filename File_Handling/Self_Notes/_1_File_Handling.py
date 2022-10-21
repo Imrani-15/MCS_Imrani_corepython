@@ -1,0 +1,16 @@
+f = open('doc.txt','w')
+print("file name:",f.name)
+print("file mode:",f.mode)
+print("is file readable:",f.readable())
+print("is file writeable:",f.writable())
+print("file closed:",f.closed)
+'''WRITING DATA TO TEXT FILE
+1 write(str)
+2 writelines(list of lines)
+'''
+f.write("MCS\t")
+f.write("Sofware company\t")
+f.write("Private limited\t")
+print("Data written to the file successfully")
+f.close()
+print("file closed:",f.closed)
